@@ -1,0 +1,51 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<issues format="6" by="lint 7.3.1" type="baseline" client="gradle" dependencies="false" name="AGP (7.3.1)" variant="all" version="7.3.1">
+
+    <issue
+        id="MissingClass"
+        message="Class referenced in the manifest, `com.kakao.sdk.auth.AuthCodeHandlerActivity`, was not found in the project or the libraries"
+        errorLine1="      &lt;activity android:name=&quot;com.kakao.sdk.auth.AuthCodeHandlerActivity&quot;"
+        errorLine2="                              ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="32"
+            column="31"/>
+    </issue>
+
+    <issue
+        id="RedundantLabel"
+        message="Redundant label can be removed"
+        errorLine1="        android:label=&quot;@string/app_name&quot;"
+        errorLine2="        ~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/AndroidManifest.xml"
+            line="44"
+            column="9"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.react_native_dev_server_port` appears to be unused">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.integer.react_native_inspector_proxy_port` appears to be unused">
+        <location
+            file="build.gradle"/>
+    </issue>
+
+    <issue
+        id="UnusedResources"
+        message="The resource `R.string.kakao_app_key` appears to be unused"
+        errorLine1="    &lt;string name=&quot;kakao_app_key&quot;>94d1f30a18529567e00f1fc0891bd950&lt;/string>"
+        errorLine2="            ~~~~~~~~~~~~~~~~~~~~">
+        <location
+            file="src/main/res/values/strings.xml"
+            line="3"
+            column="13"/>
+    </issue>
+
+</issues>

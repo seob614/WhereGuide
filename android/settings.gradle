@@ -1,0 +1,8 @@
+rootProject.name = 'WhereGuide'
+
+include ':@jaidis_react-native-ibeacon-simulator'
+project(':@jaidis_react-native-ibeacon-simulator').projectDir = new File(rootProject.projectDir, '../node_modules/@jaidis/react-native-ibeacon-simulator/android')
+
+apply from: file("../node_modules/@react-native-community/cli-platform-android/native_modules.gradle"); applyNativeModulesSettingsGradle(settings)
+include ':app'
+includeBuild('../node_modules/react-native-gradle-plugin')

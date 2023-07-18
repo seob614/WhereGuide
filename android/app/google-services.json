@@ -1,0 +1,47 @@
+{
+  "project_info": {
+    "project_number": "460023421411",
+    "project_id": "whereguide",
+    "storage_bucket": "whereguide.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:460023421411:android:a50739c3038d6d0abbe8d6",
+        "android_client_info": {
+          "package_name": "com.whereguide"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "460023421411-2fhtvblgt132vu05vjc7lvc3kqifego6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.whereguide",
+            "certificate_hash": "1f8701e714b15d2f7d81adea71773825c4388baa"
+          }
+        },
+        {
+          "client_id": "460023421411-m9juu1jp2irm6kvulls0mj9bo52jtms1.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBEOOzQEY_HQz4KJtmtP_I8FalJZSFYAW4"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "460023421411-m9juu1jp2irm6kvulls0mj9bo52jtms1.apps.googleusercontent.com",
+              "client_type": 3
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
