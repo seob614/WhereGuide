@@ -146,6 +146,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#FFF',
         elevation: 8,
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        shadowOffset: 1,
     },
     row: {
       alignItems: "center"

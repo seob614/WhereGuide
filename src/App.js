@@ -2,7 +2,7 @@ import React, {useState} from 'react';
 import { createNativeStackNavigator } from "@react-navigation/native-stack";
 import {NavigationContainer} from '@react-navigation/native';
 import {createBottomTabNavigator} from '@react-navigation/bottom-tabs';
-import {Text, View, Button} from 'react-native';
+import {Text, View, Button, SafeAreaView} from 'react-native';
 import FontAwesome from 'react-native-vector-icons/FontAwesome';
 import Entypo from 'react-native-vector-icons/Entypo';
 
@@ -33,12 +33,13 @@ export default function Navigation() {
   }
 
   return (
-    <AppContext.Provider value={values}>
-      <NavigationContainer>
-        <RootNavigator />
-      </NavigationContainer>
-    </AppContext.Provider>
-
+    <SafeAreaView style={{ flex: 1 }}>
+      <AppContext.Provider value={values}>
+        <NavigationContainer>
+          <RootNavigator />
+        </NavigationContainer>
+      </AppContext.Provider>
+    </SafeAreaView>
   );
 }
 

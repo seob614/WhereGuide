@@ -22,7 +22,7 @@
     "firebase": "^9.22.2",
     "moment": "^2.29.4",
     "react": "18.2.0",
-    "react-native": "^0.71.11",
+    "react-native": "^0.72.3",
     "react-native-beacons-manager": "github:MacKentoch/react-native-beacons-manager",
     "react-native-dialog": "^9.3.0",
     "react-native-gesture-handler": "^2.12.0",

@@ -30,6 +30,9 @@ const styles = StyleSheet.create({
         borderRadius: 5,
         backgroundColor: '#FFF',
         elevation: 1,
+        shadowOpacity: 0.25,
+        shadowRadius: 3,
+        shadowOffset: 1,
     },
     container_text: {
       padding:8,
