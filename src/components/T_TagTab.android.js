@@ -69,6 +69,7 @@ const App = ({
   route,
   }) => {
   const trip_push = route.params.trip_push;
+  const tagList = route.params.tagList;
 
   const beaconsDidRangeEvent = null;
 
@@ -100,31 +101,8 @@ const App = ({
   };
 
   useEffect(()=>{
-    const dataRef = database_ref(getDatabase(), '여행/'+trip_push+"/인원/");
-    onValue(dataRef, (snapshot) => {
-      if (snapshot.exists()) {
-        push_snap = snapshot.val();
-        const tmp = [];
-        for (i in push_snap){
-          tmp.unshift({
-              key : i,
-              trip_push : trip_push,
-              num_push : i,
-              uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
-              name: snapshot.child(i).child('이름').val(),
-              major: snapshot.child(i).child('major').val(),
-              minor: snapshot.child(i).child('minor').val(),
-              distance: "-",
-              proximity: "-",
-              check:"미확인",
-          });
-        }
-        settripnum("0/"+tmp.length);
-        tmp.reverse();
-        setitemList(tmp);
-      }else{
-      }
-    });
+    setitemList(tagList);
+    settripnum("0/"+tagList.length);
 
     return () => {
       // 사용자가 앱의 상태가 변경 되었을 경우 실행이 된다.

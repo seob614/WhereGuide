@@ -26,6 +26,7 @@
     "react-native-beacons-manager": "github:MacKentoch/react-native-beacons-manager",
     "react-native-dialog": "^9.3.0",
     "react-native-gesture-handler": "^2.12.0",
+    "react-native-gradle-plugin": "^0.71.19",
     "react-native-pager-view": "^6.2.0",
     "react-native-safe-area-context": "^4.5.3",
     "react-native-screens": "^3.21.1",

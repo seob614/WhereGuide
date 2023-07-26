@@ -25,35 +25,9 @@ const App = ({
   const date = route.params.date;
   const place = route.params.place;
   const content = route.params.content;
-
-  const [itemList, setitemList] = useState('');
+  const historyList = route.params.historyList;
 
   useEffect(()=>{
-    const dataRef = database_ref(getDatabase(), '여행/'+trip_push+"/일정/");
-    onValue(dataRef, (snapshot) => {
-      if (snapshot.exists()) {
-        push_snap = snapshot.val();
-        const tmp = [];
-        for (i in push_snap){
-          tmp.unshift({
-              key : i,
-              trip_push : trip_push,
-              h_push : i,
-              title: snapshot.child(i).child('제목').val(),
-              date: date,
-              h_date: snapshot.child(i).child('날짜').val(),
-              time: snapshot.child(i).child('시간').val(),
-              check: snapshot.child(i).child('출석').val(),
-              num: snapshot.child(i).child('인원').val(),
-          });
-        }
-        tmp.reverse();
-        setitemList(tmp);
-      }else{
-      }
-    });
-
-
   },[])
 
   const getProfile = async (): Promise<void> => {
@@ -76,7 +50,7 @@ const App = ({
     </TouchableOpacity>
 
       <FlatList
-        data={itemList}
+        data={historyList}
         renderItem={({ item }) =>
         <HistoryListView
           navigation={navigation}

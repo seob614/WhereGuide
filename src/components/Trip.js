@@ -26,6 +26,8 @@ const App = ({
   const image_url = route.params.image_url;
   const place = route.params.place;
   const content = route.params.content;
+  const historyList = route.params.historyList;
+  const tagList = route.params.tagList;
 
   React.useLayoutEffect(() => {
     navigation.setOptions({
@@ -51,7 +53,7 @@ const App = ({
       name="일정"
       component={T_HistoryTab}
       initialParams={{trip_push: trip_push, title: title,company:company,date:date,
-      image_url:image_url, place:place, content:content}}
+      image_url:image_url, place:place, content:content, historyList:historyList}}
       options={{
         headerShown: false,
           tabBarIcon: ({color, size}) => (
@@ -63,7 +65,7 @@ const App = ({
        name="여행객"
        component={T_TagTab}
        initialParams={{trip_push: trip_push, title: title,company:company,date:date,
-       image_url:image_url, place:place, content:content}}
+       image_url:image_url, place:place, content:content, tagList:tagList}}
        options={{
          headerShown: false,
            tabBarIcon: ({color, size}) => (

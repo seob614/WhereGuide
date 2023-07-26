@@ -6,7 +6,8 @@ import Dialog from "react-native-dialog";
 import NetInfo from "@react-native-community/netinfo";
 
 import "../firebase";
-import { getDatabase, ref, child, get, set, push, update } from "firebase/database";
+import { getDatabase, child, get, set, push, update, ref as database_ref, onValue } from "firebase/database";
+import { getProfile as getKakaoProfile, unlink } from '@react-native-seoul/kakao-login';
 
 import HistoryInfo from "../components/HistoryInfo";
 
@@ -14,34 +15,62 @@ const HistoryListView = ({ navigation,trip_push,h_push, title, date,h_date,time,
   const [visible, setVisible] = useState(false);
   const [visible2, setVisible2] = useState(false);
 
-  const showDialog = (check) => {
-    if (check=='진행중') {
+  const [now_check, setNow_check] = useState(check);
+
+  const getProfile = async (): Promise<void> => {
+    try {
+      const profile = await getKakaoProfile();
+
+      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      console.log(now_check);
+      const dataRef = database_ref(getDatabase());
+      get(child(dataRef, `유저/${id}/관리자`)).then((snapshot) => {
+        if (snapshot.exists()) {
+          if (snapshot.val()=="Y") {
+
+            showDialog(now_check);
+          }else{
+            console.log('관리자가 아닙니다');
+          }
+        }else{
+          console.log('관리자가 아닙니다2');
+        }
+      });
+
+
+    } catch (err) {
+      console.log('signOut error', err);
+    }
+  };
+
+  const showDialog = (now_check) => {
+    if (now_check=='진행중') {
       setVisible(true);
     }else{
       setVisible2(true);
     }
   };
 
-  const handleCancel = (check) => {
-    if (check=='진행중') {
+  const handleCancel = (now_check) => {
+    if (now_check=='진행중') {
       setVisible(false);
     }else{
       setVisible2(false);
     }
   };
 
-  const handleCheck = (check) => {
+  const handleCheck = (now_check) => {
     // The user has pressed the "Delete" button, so here you can do your own logic.
     // ...Your logic
     NetInfo.addEventListener(state => {
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
       if (state.isConnected) {
-        if (check=='진행중') {
+        if (now_check=='진행중') {
           const db = getDatabase();
-          const key = push(child(ref(db), 'posts')).key;
-
-          update(ref(db, '여행/' +trip_push+"/일정/"+h_push), {
+          const key = push(child(database_ref(db), 'posts')).key;
+          setNow_check("완료");
+          update(database_ref(db, '여행/' +trip_push+"/일정/"+h_push), {
             출석: "완료"
           })
           .then(() => {
@@ -55,9 +84,9 @@ const HistoryListView = ({ navigation,trip_push,h_push, title, date,h_date,time,
           setVisible(false);
         }else{
           const db = getDatabase();
-          const key = push(child(ref(db), 'posts')).key;
-
-          update(ref(db, '여행/' +trip_push+"/일정/"+h_push), {
+          const key = push(child(database_ref(db), 'posts')).key;
+          setNow_check("진행중");
+          update(database_ref(db, '여행/' +trip_push+"/일정/"+h_push), {
             출석: "진행중"
           })
           .then(() => {
@@ -90,8 +119,8 @@ const HistoryListView = ({ navigation,trip_push,h_push, title, date,h_date,time,
           <Dialog.Description>
             일정을 완료하셨습니까?
           </Dialog.Description>
-          <Dialog.Button label="확인" onPress={() => handleCheck(check)}/>
-          <Dialog.Button label="취소" onPress={() => handleCancel(check)}/>
+          <Dialog.Button label="확인" onPress={() => handleCheck(now_check)}/>
+          <Dialog.Button label="취소" onPress={() => handleCancel(now_check)}/>
         </Dialog.Container>
 
         <Dialog.Container visible={visible2}>
@@ -99,20 +128,20 @@ const HistoryListView = ({ navigation,trip_push,h_push, title, date,h_date,time,
           <Dialog.Description>
             일정 완료를 해제하시겠습니까?
           </Dialog.Description>
-          <Dialog.Button label="확인" onPress={() => handleCheck(check)}/>
-          <Dialog.Button label="취소" onPress={() => handleCancel(check)}/>
+          <Dialog.Button label="확인" onPress={() => handleCheck(now_check)}/>
+          <Dialog.Button label="취소" onPress={() => handleCancel(now_check)}/>
         </Dialog.Container>
-        <TouchableOpacity onPress={() => showDialog(check) } >
+        <TouchableOpacity onPress={() => getProfile() } >
           <View style={styles.container_top}>
-          {check == '진행중' ?
+          {now_check == '진행중' ?
           (
             <View style={styles.container_state}>
-              <Text style={styles.tx_state}>{check}</Text>
+              <Text style={styles.tx_state}>{now_check}</Text>
             </View>
           ) :
           (
             <View style={styles.container_state2}>
-              <Text style={styles.tx_state}>{check}</Text>
+              <Text style={styles.tx_state}>{now_check}</Text>
             </View>
           )}
           </View>

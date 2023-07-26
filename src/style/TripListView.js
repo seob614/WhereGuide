@@ -3,10 +3,10 @@ import { View, Text, StyleSheet, Image, TouchableOpacity } from 'react-native';
 
 import Trip from "../components/Trip";
 
-const TripListView = ({ navigation, trip_push, title, company,date, image_url, place, content }) => (
+const TripListView = ({ navigation, trip_push, title, company,date, image_url, place, content, historyList, tagList}) => (
     <View style={styles.container}>
       <TouchableOpacity onPress={() => navigation.navigate('Trip',{trip_push: trip_push,title: title,company:company,date:date,
-      image_url:image_url, place:place, content:content})}>
+      image_url:image_url, place:place, content:content, historyList:historyList, tagList:tagList})}>
         <Image source={{uri : image_url}} style={styles.photo} />
         <View style={styles.container_text}>
             <Text style={styles.title}>
