@@ -7,7 +7,7 @@ import {
   TextInput,
 } from 'react-native';
 import "../firebase";
-import { getDatabase, ref, child, get, set, push } from "firebase/database";
+import { getDatabase, ref, child, get, set, push, onValue } from "firebase/database";
 
 const App = ({
   navigation,
@@ -15,6 +15,8 @@ const App = ({
   }) => {
   const trip_push = route.params.trip_push;
 
+  const et_id = useRef(null);
+  const [id, setId] = useState('');
   const et_tagname = useRef(null);
   const [tagname, setTagname] = useState('');
   const et_major = useRef(null);
@@ -29,25 +31,57 @@ const App = ({
   })
 
   function saveData() {
-    const db = getDatabase();
-    const key = push(child(ref(db), 'posts')).key;
+    if (id==''||tagname==''||major==''||minor=='') {
+      alert("정보를 모두 입력하세요");
+      return;
+    }
+    var ref_id = "\""+id.trim()+"\"";
+    console.log(ref_id);
+    const dataRef = ref(getDatabase(), '/');
+    get(child(dataRef, `유저/${ref_id}`)).then((snapshot) => {
+      if (snapshot.exists()) {
+        const db = getDatabase();
+        const key = push(child(ref(db), 'posts')).key;
 
-    set(ref(db, '여행/' +trip_push+"/인원/"+key), {
-      이름:tagname,major: major,minor: minor,
-    })
-    .then(() => {
-      // Data saved successfully!
-      alert("업로드 성공");
-    })
-    .catch((error) => {
-      // The write failed...
-      alert(error);
-    });;
+        set(ref(db, '유저/' +ref_id+"/여행/"+trip_push), trip_push)
+        .then(() => {
+          // Data saved successfully!
+          alert("업로드 성공");
+        })
+        .catch((error) => {
+          // The write failed...
+          alert(error);
+        });;
+
+        set(ref(db, '여행/' +trip_push+"/인원/"+key), {
+          아이디:ref_id,이름:tagname,major: major,minor: minor,
+        })
+        .then(() => {
+          // Data saved successfully!
+          alert("업로드 성공");
+        })
+        .catch((error) => {
+          // The write failed...
+          alert(error);
+        });
+      }else{
+        alert("해당아이디가 없습니다");
+      }
+    });
+
+
 
   }
 
   return (
     <View style={styles.container}>
+      <View style={{flexDirection:'row', padding:10, alignItems: 'center', }}>
+        <Text style={styles.title}>아이디: </Text>
+        <TextInput style={{backgroundColor:'#eee', padding:5, flex:1,   }}
+         ref={et_id}
+         onChangeText={id => setId(id)}
+         placeholder="아이디을 입력해주세요"  />
+      </View>
       <View style={{flexDirection:'row', padding:10, alignItems: 'center', }}>
         <Text style={styles.title}>태그이름: </Text>
         <TextInput style={{backgroundColor:'#eee', padding:5, flex:1,   }}
@@ -60,6 +94,7 @@ const App = ({
         <TextInput style={{backgroundColor:'#eee', padding:5, flex:1,   }}
          ref={et_major}
          onChangeText={major => setMajor(major)}
+         keyboardType="number-pad"
          placeholder="주 major를 입력해주세요"  />
       </View>
       <View style={{flexDirection:'row', padding:10, alignItems: 'center', }}>
@@ -67,6 +102,7 @@ const App = ({
         <TextInput style={{backgroundColor:'#eee', padding:5, flex:1,   }}
          ref={et_minor}
          onChangeText={minor => setMinor(minor)}
+         keyboardType="number-pad"
          placeholder="보조 minor를 입력해주세요"  />
       </View>
       <Button

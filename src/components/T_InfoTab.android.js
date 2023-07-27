@@ -80,7 +80,7 @@ const App = ({
 
     // AsyncStorage에 저장된 데이터가 있다면, 불러온다.
     getData();
-
+    reqPer();
   },[])
   const getData = () => {
 
@@ -167,7 +167,7 @@ const App = ({
         alert("번호를 확인하세요.");
         return
       }
-      reqPer();
+
       BeaconBroadcast.checkTransmissionSupported()
         .then(() => {
           var num = Number(travel_num);

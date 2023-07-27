@@ -35,6 +35,10 @@ const App = ({
   })
 
   function saveData() {
+    if (h_title==''||h_date==''||hour==''||min=='') {
+      alert("정보를 모두 입력하세요");
+      return;
+    }
     const db = getDatabase();
     const key = push(child(ref(db), 'posts')).key;
 
@@ -75,12 +79,14 @@ const App = ({
          ref={et_hour}
          onChangeText={hour => setHour(hour)}
          multiline ={true}
+         keyboardType="number-pad"
          placeholder="시 입력"  />
          <Text style={styles.title}>분: </Text>
          <TextInput style={{backgroundColor:'#eee', padding:5, flex:1,   }}
           ref={et_min}
           onChangeText={min => setMin(min)}
           multiline ={true}
+          keyboardType="number-pad"
           placeholder="분 입력"  />
       </View>
       <Button
