@@ -9,9 +9,9 @@
 /* Begin PBXBuildFile section */
 		00E356F31AD99517003FC87E /* WhereGuideTests.m in Sources */ = {isa = PBXBuildFile; fileRef = 00E356F21AD99517003FC87E /* WhereGuideTests.m */; };
 		13B07FBC1A68108700A75B9A /* AppDelegate.mm in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB01A68108700A75B9A /* AppDelegate.mm */; };
-		13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		13B07FC11A68108700A75B9A /* main.m in Sources */ = {isa = PBXBuildFile; fileRef = 13B07FB71A68108700A75B9A /* main.m */; };
 		243EAA13CA7BC439C882D7D7 /* libPods-WhereGuide.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 6A81FC0D8101249AF1C81015 /* libPods-WhereGuide.a */; };
+		2A46B9D62A8247CB0025285D /* Images.xcassets in Resources */ = {isa = PBXBuildFile; fileRef = 13B07FB51A68108700A75B9A /* Images.xcassets */; };
 		2A62860B2A680DEA009B171A /* WebKit.framework in Frameworks */ = {isa = PBXBuildFile; fileRef = 2A62860A2A680DEA009B171A /* WebKit.framework */; };
 		81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */ = {isa = PBXBuildFile; fileRef = 81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */; };
 		D3565B201170A1A25A300CB4 /* libPods-WhereGuide-WhereGuideTests.a in Frameworks */ = {isa = PBXBuildFile; fileRef = 996D9014D9CAAFE505CDC1F0 /* libPods-WhereGuide-WhereGuideTests.a */; };
@@ -246,8 +246,8 @@
 			isa = PBXResourcesBuildPhase;
 			buildActionMask = 2147483647;
 			files = (
+				2A46B9D62A8247CB0025285D /* Images.xcassets in Resources */,
 				81AB9BB82411601600AC10FF /* LaunchScreen.storyboard in Resources */,
-				13B07FBF1A68108700A75B9A /* Images.xcassets in Resources */,
 			);
 			runOnlyForDeploymentPostprocessing = 0;
 		};
@@ -436,7 +436,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 143F42B32C8CE8D9C0C14CA8 /* Pods-WhereGuide-WhereGuideTests.debug.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				DEVELOPMENT_TEAM = D84GVUD3Y7;
 				GCC_PREPROCESSOR_DEFINITIONS = (
 					"DEBUG=1",
@@ -456,7 +455,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhereGuide.app/WhereGuide";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhereGuide.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WhereGuide";
 			};
 			name = Debug;
 		};
@@ -464,7 +463,6 @@
 			isa = XCBuildConfiguration;
 			baseConfigurationReference = 3321872A1D2B468E843E4FD8 /* Pods-WhereGuide-WhereGuideTests.release.xcconfig */;
 			buildSettings = {
-				BUNDLE_LOADER = "$(TEST_HOST)";
 				COPY_PHASE_STRIP = NO;
 				DEVELOPMENT_TEAM = D84GVUD3Y7;
 				INFOPLIST_FILE = WhereGuideTests/Info.plist;
@@ -481,7 +479,7 @@
 				);
 				PRODUCT_BUNDLE_IDENTIFIER = "org.reactjs.native.example.$(PRODUCT_NAME:rfc1034identifier)";
 				PRODUCT_NAME = "$(TARGET_NAME)";
-				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhereGuide.app/WhereGuide";
+				TEST_HOST = "$(BUILT_PRODUCTS_DIR)/WhereGuide.app/$(BUNDLE_EXECUTABLE_FOLDER_PATH)/WhereGuide";
 			};
 			name = Release;
 		};
@@ -495,6 +493,7 @@
 				DEVELOPMENT_TEAM = D84GVUD3Y7;
 				ENABLE_BITCODE = NO;
 				INFOPLIST_FILE = WhereGuide/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "어디가이드";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
@@ -522,6 +521,7 @@
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D84GVUD3Y7;
 				INFOPLIST_FILE = WhereGuide/Info.plist;
+				INFOPLIST_KEY_CFBundleDisplayName = "어디가이드";
 				LD_RUNPATH_SEARCH_PATHS = (
 					"$(inherited)",
 					"@executable_path/Frameworks",
