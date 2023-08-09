@@ -57,15 +57,15 @@
 		</dict>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string></string>
+	<string>Your reason for always using Bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string></string>
+	<string>Your reason for using Bluetooth</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your reason for always using location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
 	<string>Your reason for always using location</string>
 	<key>NSLocationWhenInUseUsageDescription</key>
-	<string></string>
+	<string>Your reason for using location</string>
 	<key>UIAppFonts</key>
 	<array>
 		<string>AntDesign.ttf</string>

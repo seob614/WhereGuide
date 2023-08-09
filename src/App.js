@@ -8,9 +8,9 @@ import Entypo from 'react-native-vector-icons/Entypo';
 
 import AppContext from './components/AppContext';
 
-import TripTab from "./components/TripTab.js";
+import TripTab from "./components/TripTab";
 import AlarmTab from "./components/AlarmTab.js";
-import InfoTab from "./components/InfoTab.js";
+import InfoTab from "./components/InfoTab";
 
 import Login from "./components/Login";
 import M_UploadTrip from "./components/M_UploadTrip";

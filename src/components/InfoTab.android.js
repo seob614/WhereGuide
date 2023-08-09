@@ -1,5 +1,6 @@
 import React, { useState, useEffect } from 'react';
 import {
+  Image,
   Button,
   Text,
   View,
@@ -9,8 +10,10 @@ import {
 import "../firebase";
 import Login from "./Login";
 import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
-import { getDatabase, child, get, set, ref as database_ref, onValue } from "firebase/database";
+import { getDatabase, child, get, set, remove, ref as database_ref, onValue } from "firebase/database";
 import { login, logout, getProfile as getKakaoProfile, unlink } from '@react-native-seoul/kakao-login';
+import Dialog from "react-native-dialog";
+
 const App = ({
   navigation,
   }) => {
@@ -19,6 +22,8 @@ const App = ({
   const [on_login, setOn_login] = useState(false);
   const [bt_text, setBt_text] = useState('');
   const [info_text, setInfo_text] = useState('');
+
+  const [visible, setVisible] = useState(false);
 
   useEffect(()=>{
     getStartProfile();
@@ -54,7 +59,7 @@ const App = ({
   const getStartProfile = async (): Promise<void> => {
     try {
       const profile = await getKakaoProfile();
-      setResult(JSON.stringify(profile));
+      setResult(profile);
       setBt_text('로그아웃')
       var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
       setInfo_text("아이디:"+id);
@@ -70,7 +75,7 @@ const App = ({
   const bt_getProfile = async (): Promise<void> => {
     try {
       const profile = await getKakaoProfile();
-      setResult(JSON.stringify(profile));
+      setResult(profile);
       signOutWithKakao();
     } catch (err) {
       console.log('signOut error', err);
@@ -79,15 +84,27 @@ const App = ({
     }
   };
 
+  const bt_delID = async (): Promise<void> => {
+    try {
+      const profile = await getKakaoProfile();
+      setResult(profile);
+      setVisible(true);
+    } catch (err) {
+      console.log('signOut error', err);
+
+      alert("비로그인 상태입니다. 오류시 재접속 바랍니다.");
+    }
+  };
+
   const getProfile = async (): Promise<void> => {
     try {
       const profile = await getKakaoProfile();
-      setResult(JSON.stringify(profile));
+      setResult(profile);
       var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
       setInfo_text("아이디:"+id);
 
-      const dataRef = database_ref(getDatabase(), '유저/'+id);
-      onValue(dataRef, (snapshot) => {
+      const dataRef = database_ref(getDatabase());
+      get(child(dataRef, `유저/${id}`)).then((snapshot) => {
         if (!snapshot.exists()) {
           const db = getDatabase();
           set(database_ref(db, '유저/' +id), {
@@ -118,8 +135,55 @@ const App = ({
     }
   };
 
+  const handleCheck = () => {
+    var id = JSON.stringify(result.email).slice(0, JSON.stringify(result.email).indexOf('@'))+'"';
+
+    const dataRef = database_ref(getDatabase(), '유저/'+id);
+
+    remove(dataRef);
+    setVisible(false);
+    signOutWithKakao();
+    alert("계정 삭제 완료");
+  };
+
+  const showDialog = () => {
+    setVisible(true);
+  };
+
+  const handleCancel = () => {
+    setVisible(false);
+  };
+
   return (
     <View style={styles.container}>
+      <Dialog.Container visible={visible}>
+        <Dialog.Title style={{color: '#d82d37',}}>계정 삭제</Dialog.Title>
+        <Dialog.Description>
+          계정 삭제시 모든 데이터가 사라집니다. 정말 삭제 하시겠습니까?
+        </Dialog.Description>
+        <Dialog.Button label="확인" onPress={() => handleCheck()}/>
+        <Dialog.Button label="취소" onPress={() => handleCancel()}/>
+      </Dialog.Container>
+      <View style={styles.TopBar}>
+        <Image
+          style={styles.TopLogo}
+
+          source={require('../assets/images/logo.png')}
+        />
+        {on_login ?
+        (
+          <TouchableOpacity style={styles.Topbt_view} onPress={() => bt_delID()}>
+            <View style={styles.Topbt}>
+              <Text style={styles.tx_bt}>계정 삭제</Text>
+            </View>
+          </TouchableOpacity>
+        ) :
+        (
+          <View >
+          </View>
+        )}
+
+      </View>
       <View style={styles.container_info}>
         <FontAwesome5 name="power-off" color={on_login?'#2179E3':'#5E5E5E'} size={60} />
 
@@ -140,6 +204,22 @@ const styles = StyleSheet.create({
   container: {
     flex: 1,
     backgroundColor: '#fff',
+  },
+  TopBar: {
+   flexDirection: 'row',
+   backgroundColor: '#fff',
+  },
+  TopLogo:{
+    height: 25,
+    margin:10,
+    resizeMode: "contain",
+    left:-26,
+  },
+  Topbt_view: {
+   flexDirection: 'row',
+   backgroundColor: '#fff',
+   justifyContent: 'flex-end',
+   flex:1,
   },
   container_info: {
     justifyContent: "center",
@@ -162,6 +242,15 @@ const styles = StyleSheet.create({
     paddingLeft:20,
     paddingRight:20,
     marginTop:20,
+  },
+  Topbt:{
+    backgroundColor: '#5E5E5E',
+    alignItems: "center",
+    borderRadius: 5,
+    padding:5,
+    paddingLeft:10,
+    paddingRight:10,
+    margin:10,
   },
   tx_bt: {
     textAlign: 'center',
