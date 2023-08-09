@@ -128,7 +128,7 @@ const App = ({
             const setData = async () => {
               await AsyncStorage.setItem("trip", JSON.stringify(tmp));
             }
-
+            setData();
 
           }else{
             console.log('여행을 등록하세요');
@@ -203,7 +203,7 @@ const App = ({
               await AsyncStorage.setItem("trip", JSON.stringify(tmp));
             }
 
-
+            setData();
           }else{
             console.log('여행을 등록하세요');
             setItem_visible(false);
@@ -218,13 +218,95 @@ const App = ({
     }
   };
 
+  const getTripData = async () => {
+    const storageData = await AsyncStorage.getItem("appleID");
+    if(storageData) {
+      var id = storageData
+      const dataRef = database_ref(getDatabase(), '/');
+      onValue(dataRef, (snapshot) => {
+        if (snapshot.child('유저').child(id).child('여행').exists()) {
+          push_snap = snapshot.child('유저').child(id).child('여행').val();
+          const tmp = [];
+          for (i in push_snap){
+            const h_tmp = [];
+            if (snapshot.child('여행').child(i).child('일정').exists()) {
+              h_push_snap = snapshot.child('여행').child(i).child('일정').val();
+
+              for (j in h_push_snap){
+                h_tmp.unshift({
+                    key : j,
+                    trip_push : i,
+                    h_push : j,
+                    title: snapshot.child('여행').child(i).child('일정').child(j).child('제목').val(),
+                    date: snapshot.child('여행').child(i).child('날짜').val(),
+                    h_date: snapshot.child('여행').child(i).child('일정').child(j).child('날짜').val(),
+                    time: snapshot.child('여행').child(i).child('일정').child(j).child('시간').val(),
+                    check: snapshot.child('여행').child(i).child('일정').child(j).child('출석').val(),
+                    num: snapshot.child('여행').child(i).child('일정').child(j).child('인원').val(),
+                });
+              }
+              h_tmp.reverse();
+            }
+
+            const t_tmp = [];
+            if (snapshot.child('여행').child(i).child('인원').exists()) {
+              t_push_snap = snapshot.child('여행').child(i).child('인원').val();
+
+              for (k in t_push_snap){
+                t_tmp.unshift({
+                    key : k,
+                    trip_push : i,
+                    num_push : k,
+                    uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
+                    name: snapshot.child('여행').child(i).child('인원').child(k).child('이름').val(),
+                    major: snapshot.child('여행').child(i).child('인원').child(k).child('major').val(),
+                    minor: snapshot.child('여행').child(i).child('인원').child(k).child('minor').val(),
+                    distance: "-",
+                    proximity: "-",
+                    check:"미확인",
+                });
+              }
+              t_tmp.reverse();
+            }
+
+            tmp.unshift({
+                key : i,
+                trip_push : i,
+                title: snapshot.child('여행').child(i).child('제목').val(),
+                company: snapshot.child('여행').child(i).child('여행사').val(),
+                date: snapshot.child('여행').child(i).child('날짜').val(),
+                place: snapshot.child('여행').child(i).child('여행지').val(),
+                content: snapshot.child('여행').child(i).child('내용').val(),
+                image_url: snapshot.child('여행').child(i).child('이미지').val(),
+                historyList: h_tmp,
+                tagList: t_tmp,
+            });
+
+          }
+          tmp.reverse();
+          setitemList(tmp);
+          const setData = async () => {
+            await AsyncStorage.setItem("trip", JSON.stringify(tmp));
+          }
+
+          setData();
+        }else{
+          console.log('여행을 등록하세요');
+          setItem_visible(false);
+        }
+      });
+    }else{
+      getStartProfile();
+    }
+  }
+
   const startPage = () => {
     setItem_visible(true);
     NetInfo.addEventListener(state => {
       console.log("Connection type", state.type);
       console.log("Is connected?", state.isConnected);
       if (state.isConnected) {
-        getStartProfile();
+        getTripData();
       }else{
         const getData = async () => {
             const storageData = JSON.parse(await AsyncStorage.getItem("trip"));

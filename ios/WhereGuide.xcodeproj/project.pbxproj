@@ -39,6 +39,7 @@
 		13B07FB71A68108700A75B9A /* main.m */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = sourcecode.c.objc; name = main.m; path = WhereGuide/main.m; sourceTree = "<group>"; };
 		143F42B32C8CE8D9C0C14CA8 /* Pods-WhereGuide-WhereGuideTests.debug.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhereGuide-WhereGuideTests.debug.xcconfig"; path = "Target Support Files/Pods-WhereGuide-WhereGuideTests/Pods-WhereGuide-WhereGuideTests.debug.xcconfig"; sourceTree = "<group>"; };
 		2A62860A2A680DEA009B171A /* WebKit.framework */ = {isa = PBXFileReference; lastKnownFileType = wrapper.framework; name = WebKit.framework; path = System/Library/Frameworks/WebKit.framework; sourceTree = SDKROOT; };
+		2A776CCB2A83C6C700EB319E /* WhereGuide.entitlements */ = {isa = PBXFileReference; lastKnownFileType = text.plist.entitlements; name = WhereGuide.entitlements; path = WhereGuide/WhereGuide.entitlements; sourceTree = "<group>"; };
 		3321872A1D2B468E843E4FD8 /* Pods-WhereGuide-WhereGuideTests.release.xcconfig */ = {isa = PBXFileReference; includeInIndex = 1; lastKnownFileType = text.xcconfig; name = "Pods-WhereGuide-WhereGuideTests.release.xcconfig"; path = "Target Support Files/Pods-WhereGuide-WhereGuideTests/Pods-WhereGuide-WhereGuideTests.release.xcconfig"; sourceTree = "<group>"; };
 		6A81FC0D8101249AF1C81015 /* libPods-WhereGuide.a */ = {isa = PBXFileReference; explicitFileType = archive.ar; includeInIndex = 0; path = "libPods-WhereGuide.a"; sourceTree = BUILT_PRODUCTS_DIR; };
 		81AB9BB72411601600AC10FF /* LaunchScreen.storyboard */ = {isa = PBXFileReference; fileEncoding = 4; lastKnownFileType = file.storyboard; name = LaunchScreen.storyboard; path = WhereGuide/LaunchScreen.storyboard; sourceTree = "<group>"; };
@@ -89,6 +90,7 @@
 		13B07FAE1A68108700A75B9A /* WhereGuide */ = {
 			isa = PBXGroup;
 			children = (
+				2A776CCB2A83C6C700EB319E /* WhereGuide.entitlements */,
 				13B07FAF1A68108700A75B9A /* AppDelegate.h */,
 				13B07FB01A68108700A75B9A /* AppDelegate.mm */,
 				13B07FB51A68108700A75B9A /* Images.xcassets */,
@@ -489,6 +491,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WhereGuide/WhereGuide.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D84GVUD3Y7;
 				ENABLE_BITCODE = NO;
@@ -518,6 +521,7 @@
 			buildSettings = {
 				ASSETCATALOG_COMPILER_APPICON_NAME = AppIcon;
 				CLANG_ENABLE_MODULES = YES;
+				CODE_SIGN_ENTITLEMENTS = WhereGuide/WhereGuide.entitlements;
 				CURRENT_PROJECT_VERSION = 1;
 				DEVELOPMENT_TEAM = D84GVUD3Y7;
 				INFOPLIST_FILE = WhereGuide/Info.plist;

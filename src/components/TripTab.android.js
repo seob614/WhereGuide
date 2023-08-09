@@ -128,7 +128,7 @@ const App = ({
             const setData = async () => {
               await AsyncStorage.setItem("trip", JSON.stringify(tmp));
             }
-
+            setData();
 
           }else{
             console.log('여행을 등록하세요');
@@ -203,7 +203,7 @@ const App = ({
               await AsyncStorage.setItem("trip", JSON.stringify(tmp));
             }
 
-
+            setData();
           }else{
             console.log('여행을 등록하세요');
             setItem_visible(false);
