@@ -57,9 +57,9 @@
 		</dict>
 	</dict>
 	<key>NSBluetoothAlwaysUsageDescription</key>
-	<string>Your reason for always using Bluetooth</string>
+	<string>Your reason for checking your mobile information using Bluetooth</string>
 	<key>NSBluetoothPeripheralUsageDescription</key>
-	<string>Your reason for using Bluetooth</string>
+	<string>Your reason for checking your mobile information using Bluetooth</string>
 	<key>NSLocationAlwaysAndWhenInUseUsageDescription</key>
 	<string>Your reason for always using location</string>
 	<key>NSLocationAlwaysUsageDescription</key>
