@@ -81,7 +81,7 @@ const App = ({
         //console.log(nonce, identityToken);
         var decoded = jwt_decode(identityToken);
         var get_email = decoded.email;
-        var id = '"'+get_email.slice(0, get_email.indexOf('@'))+'(apple)"';
+        var id = get_email.slice(0, get_email.indexOf('@'))+'(apple)';
 
         const dataRef = database_ref(getDatabase());
         get(child(dataRef, `유저/${id}`)).then((snapshot) => {
