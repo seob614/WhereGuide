@@ -92,7 +92,7 @@ const App = ({
             })
             .then(() => {
               // Data saved successfully!
-              setInfo_text("아이디:"+id);
+              setInfo_text("이메일:"+id);
               setOn_applelogin(true);
               setOn_login(true);
               alert("회원가입 성공");
@@ -105,6 +105,7 @@ const App = ({
         });
         const setData = async () => {
           await AsyncStorage.setItem("appleID", id);
+          await AsyncStorage.setItem("email", id);
         }
         setData();
       } else {
@@ -131,7 +132,7 @@ const App = ({
         const storageData = await AsyncStorage.getItem("appleID");
         if(storageData) {
           console.log(storageData);
-          setInfo_text("아이디:"+storageData);
+          setInfo_text("이메일:"+storageData);
           setOn_applelogin(true);
           setOn_login(true);
         }else{
@@ -160,6 +161,11 @@ const App = ({
       setResult(message);
       setBt_text('카카오 로그인')
       setInfo_text('로그인으로 간편 사용하세요.');
+      try {
+        await AsyncStorage.removeItem("email");
+      } catch (e) {
+        alert("로그아웃 오류; 어플을 재설치 하세요.")
+      }
       setOn_login(false);
     } catch (err) {
       console.log('signOut error', err);
@@ -173,7 +179,9 @@ const App = ({
       setResult(profile);
       setBt_text('로그아웃')
       var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
-      setInfo_text("아이디:"+id);
+      var c_email = email.replace('.', '?');
+      setInfo_text("이메일:"+c_email);
+      await AsyncStorage.setItem("email", email);
       setOn_login(true);
     } catch (err) {
       console.log('signOut error', err);
@@ -221,14 +229,16 @@ const App = ({
     try {
       const profile = await getKakaoProfile();
       setResult(profile);
-      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
-      setInfo_text("아이디:"+id);
+      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      var c_email = email.replace('.', '?');
+      setInfo_text("이메일:"+c_email);
+      await AsyncStorage.setItem("email", email);
 
       const dataRef = database_ref(getDatabase());
-      get(child(dataRef, `유저/${id}`)).then((snapshot) => {
+      get(child(dataRef, `유저/${c_email}`)).then((snapshot) => {
         if (!snapshot.exists()) {
           const db = getDatabase();
-          set(database_ref(db, '유저/' +id), {
+          set(database_ref(db, '유저/' +c_email), {
             아이디:id,이메일: JSON.stringify(profile.email),
           })
           .then(() => {
@@ -258,10 +268,17 @@ const App = ({
 
 
 
-  const handleCheck = () => {
-    var id = JSON.stringify(result.email).slice(0, JSON.stringify(result.email).indexOf('@'))+'"';
+  const handleCheck = async () => {
+    //var id = JSON.stringify(result.email).slice(0, JSON.stringify(result.email).indexOf('@'))+'"';
+    var c_email = email.replace('.', '?');
 
-    const dataRef = database_ref(getDatabase(), '유저/'+id);
+    const dataRef = database_ref(getDatabase(), '유저/'+c_email);
+
+    try {
+      await AsyncStorage.removeItem("email");
+    } catch (e) {
+      alert("계정삭제 오류; 어플을 재설치 하세요.")
+    }
 
     remove(dataRef);
     setVisible(false);
@@ -287,6 +304,7 @@ const App = ({
       remove(dataRef);
       try {
         await AsyncStorage.removeItem("appleID");
+        await AsyncStorage.removeItem("email");
       } catch (e) {
         alert("계정 삭제 오류; 어플을 재설치 하세요.")
       }

@@ -13,6 +13,7 @@ import FontAwesome5 from 'react-native-vector-icons/FontAwesome5';
 import { getDatabase, child, get, set, remove, ref as database_ref, onValue } from "firebase/database";
 import { login, logout, getProfile as getKakaoProfile, unlink } from '@react-native-seoul/kakao-login';
 import Dialog from "react-native-dialog";
+import AsyncStorage from "@react-native-async-storage/async-storage";
 
 const App = ({
   navigation,
@@ -30,10 +31,10 @@ const App = ({
 
   },[])
 
-  const signInWithKakao = async (): Promise<void> => {
+  const signInWithKakao = async () => {
     try {
       const token = await login();
-      setResult(JSON.stringify(token));
+      setResult(token);
       setBt_text('로그아웃');
       setOn_login(true);
       getProfile();
@@ -43,12 +44,17 @@ const App = ({
     }
   };
 
-  const signOutWithKakao = async (): Promise<void> => {
+  const signOutWithKakao = async () => {
     try {
       const message = await logout();
       setResult(message);
       setBt_text('카카오 로그인')
       setInfo_text('로그인으로 간편 사용하세요.');
+      try {
+        await AsyncStorage.removeItem("email");
+      } catch (e) {
+        alert("로그아웃 오류; 어플을 재설치 하세요.")
+      }
       setOn_login(false);
     } catch (err) {
       console.log('signOut error', err);
@@ -56,13 +62,17 @@ const App = ({
     }
   };
 
-  const getStartProfile = async (): Promise<void> => {
+  const getStartProfile = async () => {
     try {
       const profile = await getKakaoProfile();
       setResult(profile);
       setBt_text('로그아웃')
-      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
-      setInfo_text("아이디:"+id);
+      var email = profile.email;
+      var id = email.slice(0, email.indexOf('@'));
+      var c_email = email.replace('.', '?');
+      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      setInfo_text("이메일:"+email);
+      await AsyncStorage.setItem("email", email);
       setOn_login(true);
     } catch (err) {
       console.log('signOut error', err);
@@ -72,7 +82,7 @@ const App = ({
     }
   };
 
-  const bt_getProfile = async (): Promise<void> => {
+  const bt_getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
       setResult(profile);
@@ -84,7 +94,7 @@ const App = ({
     }
   };
 
-  const bt_delID = async (): Promise<void> => {
+  const bt_delID = async () => {
     try {
       const profile = await getKakaoProfile();
       setResult(profile);
@@ -96,19 +106,23 @@ const App = ({
     }
   };
 
-  const getProfile = async (): Promise<void> => {
+  const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
       setResult(profile);
-      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
-      setInfo_text("아이디:"+id);
+      var email = profile.email;
+      var id = email.slice(0, email.indexOf('@'));
+      var c_email = email.replace('.', '?');
+      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      setInfo_text("이메일:"+email);
+      await AsyncStorage.setItem("email", email);
 
       const dataRef = database_ref(getDatabase());
-      get(child(dataRef, `유저/${id}`)).then((snapshot) => {
+      get(child(dataRef, `유저/${c_email}`)).then((snapshot) => {
         if (!snapshot.exists()) {
           const db = getDatabase();
-          set(database_ref(db, '유저/' +id), {
-            아이디:id,이메일: JSON.stringify(profile.email),
+          set(database_ref(db, '유저/' +c_email), {
+            아이디:id,이메일: email,
           })
           .then(() => {
             // Data saved successfully!
@@ -125,7 +139,7 @@ const App = ({
     }
   };
 
-  const unlinkKakao = async (): Promise<void> => {
+  const unlinkKakao = async () => {
     try {
       const message = await unlink();
 
@@ -135,10 +149,19 @@ const App = ({
     }
   };
 
-  const handleCheck = () => {
-    var id = JSON.stringify(result.email).slice(0, JSON.stringify(result.email).indexOf('@'))+'"';
+  const handleCheck = async () => {
+    var email = result.email;
+    var id = '"'+email.slice(0, email.indexOf('@'))+'"';
+    var c_email = email.replace('.', '?');
+    //var id = JSON.stringify(result.email).slice(0, JSON.stringify(result.email).indexOf('@'))+'"';
 
-    const dataRef = database_ref(getDatabase(), '유저/'+id);
+    const dataRef = database_ref(getDatabase(), '유저/'+c_email);
+
+    try {
+      await AsyncStorage.removeItem("email");
+    } catch (e) {
+      alert("계정삭제 오류; 어플을 재설치 하세요.")
+    }
 
     remove(dataRef);
     setVisible(false);

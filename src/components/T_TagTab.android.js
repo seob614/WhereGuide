@@ -31,13 +31,25 @@ async function reqPer() {
 
   try {
 
-    const granted = await PermissionsAndroid.requestMultiple([
+    const gps_granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: '위치 권한 허용',
+        message: '이 앱은 앱이 종료되었거나 사용 중이 아닐 때도 위치 데이터를 수집하여 실종사고 방지, 인원통제 기능을 지원합니다.',
+        buttonPositive: '확인',
+      },
+    )
+    if (gps_granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("위치 권한 획득")
+    } else {
+      console.log("위치 권한 거절")
+    }
+    const granted = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_ADVERTISE
     ]).then((result) => {
-      if (result['android.permission.ACCESS_FINE_LOCATION'] &&
+      if (
         result['android.permission.BLUETOOTH_SCAN'] &&
         result['android.permission.BLUETOOTH_CONNECT'] &&
         result['android.permission.BLUETOOTH_ADVERTISE'] === 'granted') {
@@ -211,11 +223,13 @@ const App = ({
 
   }
 
-  const getProfile = async (): Promise<void> => {
+  const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
 
-      if (JSON.stringify(profile.id)==="\"2873594727\"") {
+      var num_id = profile.id;
+
+      if (num_id==="2873594727") {
         navigation.navigate('M_UploadTag',{trip_push: trip_push})
       }
     } catch (err) {

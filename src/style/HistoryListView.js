@@ -17,11 +17,13 @@ const HistoryListView = ({ navigation,trip_push,h_push, title, date,h_date,time,
 
   const [now_check, setNow_check] = useState(check);
 
-  const getProfile = async (): Promise<void> => {
+  const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
 
-      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      var id = '"'+email.slice(0, email.indexOf('@'))+'"';
+
+      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
       console.log(now_check);
       const dataRef = database_ref(getDatabase());
       get(child(dataRef, `유저/${id}/관리자`)).then((snapshot) => {

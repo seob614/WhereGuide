@@ -30,11 +30,12 @@ const App = ({
   useEffect(()=>{
   },[])
 
-  const getProfile = async (): Promise<void> => {
+  const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
+      var num_id = profile.id;
 
-      if (JSON.stringify(profile.id)==="\"2873594727\"") {
+      if (num_id==="2873594727") {
         navigation.navigate('M_UploadHistory',{trip_push: trip_push,title: title,company:company,date:date,
         place:place, content:content});
       }

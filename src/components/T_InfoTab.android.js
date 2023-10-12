@@ -22,14 +22,25 @@ import AsyncStorage from "@react-native-async-storage/async-storage";
 async function reqPer() {
 
   try {
-
-    const granted = await PermissionsAndroid.requestMultiple([
+    const gps_granted = await PermissionsAndroid.request(
       PermissionsAndroid.PERMISSIONS.ACCESS_FINE_LOCATION,
+      {
+        title: '위치 권한 허용',
+        message: '이 앱은 앱이 종료되었거나 사용 중이 아닐 때도 위치 데이터를 수집하여 실종사고 방지, 인원통제 기능을 지원합니다.',
+        buttonPositive: '확인',
+      },
+    )
+    if (gps_granted === PermissionsAndroid.RESULTS.GRANTED) {
+      console.log("위치 권한 획득")
+    } else {
+      console.log("위치 권한 거절")
+    }
+    const granted = await PermissionsAndroid.requestMultiple([
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_SCAN,
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_CONNECT,
       PermissionsAndroid.PERMISSIONS.BLUETOOTH_ADVERTISE
     ]).then((result) => {
-      if (result['android.permission.ACCESS_FINE_LOCATION'] &&
+      if (
         result['android.permission.BLUETOOTH_SCAN'] &&
         result['android.permission.BLUETOOTH_CONNECT'] &&
         result['android.permission.BLUETOOTH_ADVERTISE'] === 'granted') {
@@ -133,7 +144,7 @@ const App = ({
     }
   };
 
-  const handleCheck = () => {
+  const handleCheck = async () => {
     // The user has pressed the "Delete" button, so here you can do your own logic.
     // ...Your logic
 
@@ -165,6 +176,31 @@ const App = ({
     }else{
       if (travel_num==null||travel_num2==null||0>=travel_num||travel_num>=65535||0>=travel_num2||travel_num2>=65535) {
         alert("번호를 확인하세요.");
+        return
+      }
+
+      const storageData = await AsyncStorage.getItem("email");
+
+      if(storageData) {
+        const tagList = route.params.tagList;
+        var no_email = true;
+        for (var i = 0; i < tagList.length; i++) {
+          var email = tagList[i].email;
+
+          if (storageData==email) {
+
+            if (tagList[i].major===travel_num.trim().toString()&&tagList[i].minor===travel_num2.trim().toString()) {
+              no_email = false;
+            }
+
+          }
+        }
+        if (no_email) {
+          alert("여행객 번호 확인 및 여행객 등록여부를 여행사에서 확인하세요.");
+          return
+        }
+      }else{
+        alert("회원가입 혹은 로그인 상태를 확인하세요.");
         return
       }
 

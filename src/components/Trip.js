@@ -41,7 +41,7 @@ const App = ({
       name="여행정보"
       component={T_InfoTab}
       initialParams={{trip_push: trip_push, title: title,company:company,date:date,
-      image_url:image_url, place:place, content:content}}
+      image_url:image_url, place:place, content:content, tagList:tagList}}
       options={{
         headerShown: false,
           tabBarIcon: ({color, size}) => (
