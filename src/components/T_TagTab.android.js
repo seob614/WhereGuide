@@ -223,11 +223,13 @@ const App = ({
 
   }
 
-  const getProfile = async (): Promise<void> => {
+  const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
 
-      if (JSON.stringify(profile.id)==="\"2873594727\"") {
+      var num_id = profile.id;
+
+      if (num_id==="2873594727") {
         navigation.navigate('M_UploadTag',{trip_push: trip_push})
       }
     } catch (err) {

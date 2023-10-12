@@ -35,7 +35,7 @@ const App = ({
       alert("정보를 모두 입력하세요");
       return;
     }
-    var ref_id = "\""+id.trim()+"\"";
+    var ref_id = id.replace('.', '?');
     console.log(ref_id);
     const dataRef = ref(getDatabase(), '/');
     get(child(dataRef, `유저/${ref_id}`)).then((snapshot) => {
@@ -54,7 +54,7 @@ const App = ({
         });;
 
         set(ref(db, '여행/' +trip_push+"/인원/"+key), {
-          아이디:ref_id,이름:tagname,major: major,minor: minor,
+          아이디:id,이름:tagname,major: major,minor: minor,
         })
         .then(() => {
           // Data saved successfully!

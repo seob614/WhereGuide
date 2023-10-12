@@ -144,7 +144,7 @@ const App = ({
     }
   };
 
-  const handleCheck = () => {
+  const handleCheck = async () => {
     // The user has pressed the "Delete" button, so here you can do your own logic.
     // ...Your logic
 
@@ -176,6 +176,31 @@ const App = ({
     }else{
       if (travel_num==null||travel_num2==null||0>=travel_num||travel_num>=65535||0>=travel_num2||travel_num2>=65535) {
         alert("번호를 확인하세요.");
+        return
+      }
+
+      const storageData = await AsyncStorage.getItem("email");
+
+      if(storageData) {
+        const tagList = route.params.tagList;
+        var no_email = true;
+        for (var i = 0; i < tagList.length; i++) {
+          var email = tagList[i].email;
+
+          if (storageData==email) {
+
+            if (tagList[i].major===travel_num.trim().toString()&&tagList[i].minor===travel_num2.trim().toString()) {
+              no_email = false;
+            }
+
+          }
+        }
+        if (no_email) {
+          alert("여행객 번호 확인 및 여행객 등록여부를 여행사에서 확인하세요.");
+          return
+        }
+      }else{
+        alert("회원가입 혹은 로그인 상태를 확인하세요.");
         return
       }
 

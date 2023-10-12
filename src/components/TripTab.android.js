@@ -33,11 +33,13 @@ const App = ({
   const [item_visible, setItem_visible] = useState(true);
   const [visible, setVisible] = useState(false);
 
-  const getProfile = async (): Promise<void> => {
+  const getProfile = async () => {
     try {
       const profile = await getKakaoProfile();
 
-      if (JSON.stringify(profile.id)==="\"2873594727\"") {
+      var num_id = profile.id;
+
+      if (num_id==="2873594727") {
         navigation.navigate('M_UploadTrip')
       }else{
         showDialog();
@@ -56,12 +58,18 @@ const App = ({
     setVisible(false);
   };
 
-  const getStartProfile = async (): Promise<void> => {
+  const getStartProfile = async () => {
     try {
       const profile = await getKakaoProfile();
-      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      var email = profile.email;
 
-      if (JSON.stringify(profile.id)==="\"2873594727\"") {
+      var num_id = profile.id;
+
+      var id = email.slice(0, email.indexOf('@'))+email.slice(email.indexOf('@')).replace('.', '?');
+      //var id = '"'+email.slice(0, email.indexOf('@'))+'"';
+      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+
+      if (num_id==="2873594727") {
         const dataRef = database_ref(getDatabase(), '/');
         onValue(dataRef, (snapshot) => {
           if (snapshot.child('여행').exists()) {
@@ -98,6 +106,7 @@ const App = ({
                       trip_push : i,
                       num_push : k,
                       uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
+                      email: snapshot.child('여행').child(i).child('인원').child(k).child('아이디').val(),
                       name: snapshot.child('여행').child(i).child('인원').child(k).child('이름').val(),
                       major: snapshot.child('여행').child(i).child('인원').child(k).child('major').val(),
                       minor: snapshot.child('여행').child(i).child('인원').child(k).child('minor').val(),
@@ -172,6 +181,7 @@ const App = ({
                       trip_push : i,
                       num_push : k,
                       uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
+                      email: snapshot.child('여행').child(i).child('인원').child(k).child('아이디').val(),
                       name: snapshot.child('여행').child(i).child('인원').child(k).child('이름').val(),
                       major: snapshot.child('여행').child(i).child('인원').child(k).child('major').val(),
                       minor: snapshot.child('여행').child(i).child('인원').child(k).child('minor').val(),

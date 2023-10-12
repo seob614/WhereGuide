@@ -59,7 +59,8 @@ const App = ({
   const getStartProfile = async (): Promise<void> => {
     try {
       const profile = await getKakaoProfile();
-      var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
+      var id = email.slice(0, email.indexOf('@'))+email.slice(email.indexOf('@')).replace('.', '?');
+      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
 
       if (JSON.stringify(profile.id)==="\"2873594727\"") {
         const dataRef = database_ref(getDatabase(), '/');
@@ -98,6 +99,7 @@ const App = ({
                       trip_push : i,
                       num_push : k,
                       uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
+                      email: snapshot.child('여행').child(i).child('인원').child(k).child('아이디').val(),
                       name: snapshot.child('여행').child(i).child('인원').child(k).child('이름').val(),
                       major: snapshot.child('여행').child(i).child('인원').child(k).child('major').val(),
                       minor: snapshot.child('여행').child(i).child('인원').child(k).child('minor').val(),
@@ -172,6 +174,7 @@ const App = ({
                       trip_push : i,
                       num_push : k,
                       uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
+                      email: snapshot.child('여행').child(i).child('인원').child(k).child('아이디').val(),
                       name: snapshot.child('여행').child(i).child('인원').child(k).child('이름').val(),
                       major: snapshot.child('여행').child(i).child('인원').child(k).child('major').val(),
                       minor: snapshot.child('여행').child(i).child('인원').child(k).child('minor').val(),
@@ -258,6 +261,7 @@ const App = ({
                     trip_push : i,
                     num_push : k,
                     uuid: '68243019-63e6-4fe8-9fa7-52a90b29a5d4',
+                    email: snapshot.child('여행').child(i).child('인원').child(k).child('아이디').val(),
                     name: snapshot.child('여행').child(i).child('인원').child(k).child('이름').val(),
                     major: snapshot.child('여행').child(i).child('인원').child(k).child('major').val(),
                     minor: snapshot.child('여행').child(i).child('인원').child(k).child('minor').val(),
