@@ -59,6 +59,7 @@ const App = ({
   const getStartProfile = async (): Promise<void> => {
     try {
       const profile = await getKakaoProfile();
+      var email = profile.email;
       var id = email.slice(0, email.indexOf('@'))+email.slice(email.indexOf('@')).replace('.', '?');
       //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
 

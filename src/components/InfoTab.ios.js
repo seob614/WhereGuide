@@ -24,6 +24,7 @@ const App = ({
 
   const [result, setResult] = useState('');
   const [on_login, setOn_login] = useState(false);
+  const [on_kakaologin, setOn_kakaologin] = useState(false);
   const [on_applelogin, setOn_applelogin] = useState(false);
   const [bt_text, setBt_text] = useState('');
   const [info_text, setInfo_text] = useState('');
@@ -148,6 +149,7 @@ const App = ({
       setResult(JSON.stringify(token));
       setBt_text('로그아웃');
       setOn_login(true);
+      setOn_kakaologin(true);
       getProfile();
     } catch (err) {
       console.log('login err', err);
@@ -167,6 +169,7 @@ const App = ({
         alert("로그아웃 오류; 어플을 재설치 하세요.")
       }
       setOn_login(false);
+      setOn_kakaologin(false);
     } catch (err) {
       console.log('signOut error', err);
       alert(err);
@@ -179,15 +182,17 @@ const App = ({
       setResult(profile);
       setBt_text('로그아웃')
       var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
-      var c_email = email.replace('.', '?');
-      setInfo_text("이메일:"+c_email);
-      await AsyncStorage.setItem("email", email);
+      var c_email = profile.email.replace('.', '?');
+      setInfo_text("이메일:"+profile.email);
+      await AsyncStorage.setItem("email", profile.email);
       setOn_login(true);
+      setOn_kakaologin(true);
     } catch (err) {
       console.log('signOut error', err);
       setBt_text('카카오 로그인')
       setInfo_text('로그인으로 간편 사용하세요.');
       setOn_login(false);
+      setOn_kakaologin(false);
     }
   };
 
@@ -229,10 +234,10 @@ const App = ({
     try {
       const profile = await getKakaoProfile();
       setResult(profile);
-      //var id = JSON.stringify(profile.email).slice(0, JSON.stringify(profile.email).indexOf('@'))+'"';
-      var c_email = email.replace('.', '?');
-      setInfo_text("이메일:"+c_email);
-      await AsyncStorage.setItem("email", email);
+      var id = profile.email.slice(0, profile.email.indexOf('@'));
+      var c_email = profile.email.replace('.', '?');
+      setInfo_text("이메일:"+profile.email);
+      await AsyncStorage.setItem("email", profile.email);
 
       const dataRef = database_ref(getDatabase());
       get(child(dataRef, `유저/${c_email}`)).then((snapshot) => {
@@ -270,7 +275,7 @@ const App = ({
 
   const handleCheck = async () => {
     //var id = JSON.stringify(result.email).slice(0, JSON.stringify(result.email).indexOf('@'))+'"';
-    var c_email = email.replace('.', '?');
+    var c_email = result.email.replace('.', '?');
 
     const dataRef = database_ref(getDatabase(), '유저/'+c_email);
 
@@ -317,6 +322,7 @@ const App = ({
       setInfo_text('로그인으로 간편 사용하세요.');
       setOn_applelogin(false);
       setOn_login(false);
+      setOn_kakaologin(false);
       setVisible2(false);
       alert("계정 삭제 완료");
     }else{
@@ -381,16 +387,30 @@ const App = ({
         ) :
         (
           <View>
-            <TouchableOpacity onPress={() => bt_getProfile()}>
-              <View style={styles.container_bt} backgroundColor={on_login?'#5E5E5E':'#2179E3'}>
-                <Text style={styles.tx_bt}>{bt_text}</Text>
+            {on_kakaologin ?
+            (
+              <View>
+                <TouchableOpacity onPress={() => bt_getProfile()}>
+                  <View style={styles.container_bt} backgroundColor={on_login?'#5E5E5E':'#2179E3'}>
+                    <Text style={styles.tx_bt}>{bt_text}</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
-            <TouchableOpacity onPress={() => onAppleButtonPress(updateCredentialStateForUser)}>
-              <View style={styles.container_bt} backgroundColor={'#2179E3'}>
-                <Text style={styles.tx_bt}>Apple 로그인</Text>
+            ) :
+            (
+              <View>
+                <TouchableOpacity onPress={() => bt_getProfile()}>
+                  <View style={styles.container_bt} backgroundColor={on_login?'#5E5E5E':'#2179E3'}>
+                    <Text style={styles.tx_bt}>{bt_text}</Text>
+                  </View>
+                </TouchableOpacity>
+                <TouchableOpacity onPress={() => onAppleButtonPress(updateCredentialStateForUser)}>
+                  <View style={styles.container_bt} backgroundColor={'#2179E3'}>
+                    <Text style={styles.tx_bt}>Apple 로그인</Text>
+                  </View>
+                </TouchableOpacity>
               </View>
-            </TouchableOpacity>
+            )}
           </View>
         )}
 
