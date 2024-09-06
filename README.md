@@ -17,7 +17,7 @@
 </br></br>
 □ 데이터가 필요 없는 서비스
 </br>
-설정 후, 해외에서도 데이터 없이 사용하는 서비스
+해외에서도 데이터 없이 사용하는 서비스
 ***
 ### 플레이스토어: https://play.google.com/store/apps/details?id=com.whereguide&pcampaignid=web_share
 ***
