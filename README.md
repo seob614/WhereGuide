@@ -19,7 +19,7 @@
 </br>
 해외에서도 데이터 없이 사용하는 서비스
 ***
-### 플레이스토어: https://play.google.com/store/apps/details?id=com.whereguide&pcampaignid=web_share
+### 플레이스토어: [https://play.google.com/store/apps/details?id=com.whereguide&pcampaignid=web_share](https://play.google.com/store/apps/details?id=com.courr.checkbook)
 ***
 ## 개발 정보
 ### 모바일 BLE를 통한 위치 정보 활용
